@@ -11,6 +11,8 @@ const respawnValueEl = document.getElementById("respawn--value");
 
 const respawnCurrentValueEl = document.getElementById("respawn--current-value");
 
+const targetSizeEl = document.getElementById("size--value");
+
 const scoreStatusEl = document.getElementById("score--status");
 
 const targets = [];
@@ -19,6 +21,8 @@ let missCounter = 0;
 let numberOfTargetsLimit = 8;
 let respawnTargetInterval;
 let targetRespawnTime = 1000; // milliseconds
+
+let targetSize = 1;
 
 numberOfTargets.innerText = numberOfTargetsLimit;
 
@@ -85,6 +89,7 @@ function createTarget(x, y) {
   target.style.top = y + "%";
   target.id = "target-" + randomId();
   target.innerText = internalScore;
+  target.style.transform = `scale(${targetSize})`;
 
   gameEl.appendChild(target);
 
@@ -157,6 +162,11 @@ function checkNumberOfTargets() {
 
   if (numberOfTargets < numberOfTargetsLimit)
     createTarget(randomCoordinate(), randomCoordinate());
+
+  const targetsArr = gameEl.querySelectorAll(".target");
+  for (let i = 0; i < targetsArr.length; i++) {
+    targetsArr[i].style.transform = `scale(${targetSize})`;
+  }
 }
 
 // Increment/Decrement feature
@@ -193,4 +203,21 @@ function changeRespawnTime() {
   clearInterval(respawnTargetInterval);
 
   respawnTargetInterval = setInterval(checkNumberOfTargets, targetRespawnTime);
+}
+
+// target size
+
+targetSizeEl.min = 0;
+targetSizeEl.max = 4;
+targetSizeEl.step = 0.01;
+targetSizeEl.value = targetSize;
+
+targetSizeEl.addEventListener("change", setTargetSize);
+
+const temp = document.getElementById("size--current-value");
+temp.innerText = targetSize;
+
+function setTargetSize() {
+  targetSize = targetSizeEl.value;
+  temp.innerText = targetSize;
 }

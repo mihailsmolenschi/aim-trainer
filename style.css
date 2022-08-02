@@ -60,6 +60,14 @@ button {
   z-index: 0;
 }
 
+.respawn--container,
+.size--container {
+  display: flex;
+  flex-direction: column;
+  justify-content: content;
+  align-items: center;
+}
+
 .add,
 .substract {
   border-radius: 10px;
@@ -100,7 +108,7 @@ button {
   width: 4rem;
   height: 4rem;
 
-  animation: grow 1s, pulse 4s infinite;
+  /* animation: grow 1s, pulse 4s infinite; */
   /* animation: pulse 4s infinite; */
 
   z-index: 2;
