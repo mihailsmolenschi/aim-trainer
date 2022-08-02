@@ -12,13 +12,13 @@ const respawnValueEl = document.getElementById("t-respawn--value");
 const targets = [];
 let score = 0;
 let missCounter = 0;
-let numberOfTargetsLimit = 8;
+let numberOfTargetsLimit = 10;
 let respawnTargetInterval;
-let targetRespawnTime = 100; // milliseconds
+let targetRespawnTime = 500; // milliseconds
 
 numberOfTargets.innerText = numberOfTargetsLimit;
 
-// const randN = (max) => return Math.floor(Math.random() * (max - min)) + min;
+const randN = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
 const randomCoordinate = () => Math.floor(Math.random() * 90);
 
@@ -38,7 +38,12 @@ const targetLogic = (event, target) => {
 function createTarget(x, y) {
   const target = document.createElement("div");
 
-  let internalScore = 10;
+  // generate a number between 1 and 10
+  let targetLifeSpan = randN(1000, 10000);
+
+  let internalScore = Math.round(targetLifeSpan / 1000);
+
+  const targetPoints = internalScore;
 
   target.className = "target";
   target.style.left = x + "%";
@@ -51,9 +56,11 @@ function createTarget(x, y) {
   setTimeout(() => {
     if (gameEl.contains(target)) {
       gameEl.removeChild(target);
-      countMisses();
+
+      // if not clicked in time you loose points
+      countMisses(targetPoints);
     }
-  }, 10000);
+  }, targetLifeSpan);
 
   setInterval(() => {
     target.innerText = --internalScore;
@@ -95,9 +102,9 @@ function createMissedTarget(x, y) {
   }, 10000);
 }
 
-function countMisses() {
+function countMisses(points) {
   missEl.innerText = ++missCounter;
-  if (score - 10 > 0) updateScore(-10);
+  if (score - points > 0) updateScore(-points);
   else {
     score = 0;
     updateScore(0);
@@ -105,6 +112,7 @@ function countMisses() {
 }
 
 // Updates every n millisecons
+
 respawnTargetInterval = setInterval(checkNumberOfTargets, targetRespawnTime);
 
 function checkNumberOfTargets() {
@@ -133,9 +141,9 @@ function incrementTargets() {
 
 // Respawn target feature
 
-respawnValueEl.value = targetRespawnTime;
 respawnValueEl.min = 1;
 respawnValueEl.max = 2000;
+respawnValueEl.value = targetRespawnTime;
 
 respawnValueEl.addEventListener("click", changeRespawnTime);
 
