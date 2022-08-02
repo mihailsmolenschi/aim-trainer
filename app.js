@@ -7,14 +7,18 @@ const missEl = document.getElementById("miss");
 const decrementTargetsEl = document.getElementById("targets-decrement");
 const incrementTargetsEl = document.getElementById("targets-increment");
 const numberOfTargets = document.getElementById("targets-number");
-const respawnValueEl = document.getElementById("t-respawn--value");
+const respawnValueEl = document.getElementById("respawn--value");
+
+const respawnCurrentValueEl = document.getElementById("respawn--current-value");
+
+const scoreStatusEl = document.getElementById("score--status");
 
 const targets = [];
 let score = 0;
 let missCounter = 0;
-let numberOfTargetsLimit = 10;
+let numberOfTargetsLimit = 8;
 let respawnTargetInterval;
-let targetRespawnTime = 500; // milliseconds
+let targetRespawnTime = 1000; // milliseconds
 
 numberOfTargets.innerText = numberOfTargetsLimit;
 
@@ -25,13 +29,44 @@ const randomCoordinate = () => Math.floor(Math.random() * 90);
 const randomId = () => Math.random().toString();
 
 const updateScore = (currentScore) => {
-  score += currentScore;
-  scoreEl.innerText = score;
+  if (currentScore > 0) {
+    score += currentScore;
+
+    scoreEl.innerText = score;
+
+    updateScoreStatus("add", currentScore);
+  } else if (currentScore === 0) {
+    score = 0;
+
+    scoreEl.innerText = score;
+
+    updateScoreStatus();
+  }
 };
+
+function updateScoreStatus(className, score) {
+  if (className === undefined) {
+    scoreStatusEl.classList.remove("substract");
+    scoreStatusEl.classList.remove("add");
+    scoreStatusEl.innerText = "";
+    return;
+  }
+
+  if (className === "add") {
+    scoreStatusEl.classList.remove("substract");
+    scoreStatusEl.classList.add("add");
+    scoreStatusEl.innerText = "+ " + score;
+  } else if (className === "substract") {
+    scoreStatusEl.classList.remove("add");
+    scoreStatusEl.classList.add("substract");
+    scoreStatusEl.innerText = "- " + score;
+  }
+}
 
 const targetLogic = (event, target) => {
   event.stopPropagation();
   updateScore(Number(target.innerText));
+  // scoreStatusEl.classList.add("add");
   gameEl.removeChild(target);
 };
 
@@ -104,9 +139,11 @@ function createMissedTarget(x, y) {
 
 function countMisses(points) {
   missEl.innerText = ++missCounter;
-  if (score - points > 0) updateScore(-points);
-  else {
-    score = 0;
+  if (score - points > 0) {
+    updateScore(-points);
+
+    updateScoreStatus("substract", points);
+  } else if (score - points <= 0) {
     updateScore(0);
   }
 }
@@ -144,11 +181,14 @@ function incrementTargets() {
 respawnValueEl.min = 1;
 respawnValueEl.max = 2000;
 respawnValueEl.value = targetRespawnTime;
+respawnCurrentValueEl.innerText = targetRespawnTime;
 
 respawnValueEl.addEventListener("click", changeRespawnTime);
 
 function changeRespawnTime() {
   targetRespawnTime = respawnValueEl.value;
+
+  respawnCurrentValueEl.innerText = targetRespawnTime;
 
   clearInterval(respawnTargetInterval);
 
