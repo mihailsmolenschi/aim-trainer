@@ -106,7 +106,7 @@ function createTarget(x, y) {
     target.innerText = --internalScore;
   }, 1000);
 
-  target.addEventListener("click", (event) => targetLogic(event, target));
+  target.addEventListener("mousedown", (event) => targetLogic(event, target));
   // Right click support
   target.addEventListener("contextmenu", (event) => {
     event.preventDefault();
