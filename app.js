@@ -46,8 +46,6 @@ const updateScore = (points) => {
 
   score += points;
 
-  console.log(score);
-
   scoreEl.innerText = score;
 
   updateScoreStatus("add", points);
@@ -72,13 +70,11 @@ function updateScoreStatus(className, score) {
   }
 }
 
-const targetLogic = (event, target) => {
-  event.stopPropagation();
-
+function targetLogic(target) {
   updateScore(target.value);
 
   gameEl.removeChild(target);
-};
+}
 
 function createTarget(x, y) {
   const target = document.createElement("div");
@@ -120,10 +116,16 @@ function createTarget(x, y) {
 
   // Click and right click for targets
 
-  target.addEventListener("mousedown", (event) => targetLogic(event, target));
+  target.addEventListener("mousedown", (event) => {
+    event.stopPropagation();
+
+    targetLogic(target);
+  });
+
   // Right click support
   target.addEventListener("contextmenu", (event) => {
     event.preventDefault();
+
     targetLogic(event, target);
   });
 }
@@ -204,7 +206,7 @@ function changeTargetSize(target) {
 
 // Increment/Decrement feature
 
-targetsCurrentValueEl.addEventListener("click", changeTargetsNumber);
+targetsCurrentValueEl.addEventListener("input", changeTargetsNumber);
 
 function changeTargetsNumber() {
   numberOfTargetsLimit = targetsCurrentValueEl.value;
@@ -218,7 +220,7 @@ respawnValueEl.max = 2000;
 respawnValueEl.value = targetRespawnTime;
 respawnCurrentValueEl.innerText = targetRespawnTime;
 
-respawnValueEl.addEventListener("click", changeRespawnTime);
+respawnValueEl.addEventListener("input", changeRespawnTime);
 
 function changeRespawnTime() {
   targetRespawnTime = respawnValueEl.value;
@@ -233,11 +235,11 @@ function changeRespawnTime() {
 // target size
 
 targetSizeEl.min = 0.5;
-targetSizeEl.max = 3;
+targetSizeEl.max = 2;
 targetSizeEl.step = 0.01;
 targetSizeEl.value = targetSize;
 
-targetSizeEl.addEventListener("change", setTargetSize);
+targetSizeEl.addEventListener("input", setTargetSize);
 
 const currentSizeValueEl = document.getElementById("size--current-value");
 currentSizeValueEl.innerText = targetSize;
@@ -246,3 +248,11 @@ function setTargetSize() {
   targetSize = targetSizeEl.value;
   currentSizeValueEl.innerText = targetSize;
 }
+
+// toggle menu
+const navbarEl = document.querySelector(".navbar");
+const btnToggleMenu = document.querySelector(".btn-toggle-menu");
+
+btnToggleMenu.addEventListener("click", () => {
+  navbarEl.classList.toggle("open-menu");
+});

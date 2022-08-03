@@ -7,24 +7,96 @@
 
 html {
   font-size: 62.5%;
-  font-family: sans-serif;
-  height: 100vh;
-  width: 100vw;
 }
 
 body {
+  height: 100vh;
+  width: 100vw;
+
+  overflow-x: hidden;
+
+  font-family: sans-serif;
+}
+
+.app {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
 }
 
-button {
-  width: 2rem;
+.navbar {
+  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
+  padding: 1rem;
+
+  position: relative;
+  background-color: antiquewhite;
 }
 
-.app {
-  margin-top: 2rem;
+.btn-toggle-menu {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+  z-index: 11;
+
+  width: 8rem;
+  height: 4rem;
+  font-size: 2rem;
+  border: 1px solid #818181fb;
+  border-radius: 10px;
+
+  background-color: #fff;
+  color: #000;
+
+  transition: all 0.3s;
+
+  cursor: pointer;
+}
+.btn-toggle-menu:hover,
+.btn-toggle-menu:active {
+  transform: scale(1.1);
+}
+
+.main-menu {
+  background-color: antiquewhite;
+  font-size: 2rem;
+
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-shadow: 1px 5px 20px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100vw;
+  height: 50vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  pointer-events: none;
+
+  transition: all 0.3s ease-in;
+
+  opacity: 0;
+  transform: translateY(-100%);
+  visibility: hidden;
+}
+
+.open-menu .main-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  z-index: 10;
+
+  pointer-events: all;
 }
 
 .main {
@@ -63,17 +135,22 @@ button {
 .respawn--container,
 .size--container,
 .targets-number--container {
-  display: flex;
-  flex-direction: column;
-  justify-content: content;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1rem;
+}
+
+.respawn--container span:not(:last-child),
+.size--container span:not(:last-child),
+.targets-number--container span:not(:last-child) {
+  text-align: right;
 }
 
 .add,
 .substract {
   border-radius: 10px;
   color: #fff;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 }
 
 .add {
