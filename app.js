@@ -19,18 +19,23 @@ let missCounter = 0;
 let respawnTargetInterval;
 let targetRespawnTime = 1000; // milliseconds
 
-let targetSize = 1;
+let targetWidth = 40; // px
 
 let numberOfTargetsLimit = 8;
+
 targetsCurrentValueEl.min = 1;
 targetsCurrentValueEl.max = 20;
 targetsCurrentValueEl.value = numberOfTargetsLimit;
 numberOfTargetsEl.innerText = numberOfTargetsLimit;
 
 const randomNumberBetweenMinMax = (min, max) =>
-  Math.floor(Math.random() * (max - min)) + min;
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
-const randomCoordinate = () => Math.floor(Math.random() * 90);
+const randomCoordinate = (max) => {
+  // to not get a random number above the limit of the board width/height
+  const top = max - targetWidth;
+  return Math.floor(Math.random() * top + 1);
+};
 
 const randomId = () => Math.random().toString();
 
@@ -87,13 +92,16 @@ function createTarget(x, y) {
   const losePoints = currentPoints;
 
   target.className = "target";
-  target.style.left = x + "%";
-  target.style.top = y + "%";
+  console.log(gameEl.offsetWidth);
+
+  target.style.left = x + "px";
+  target.style.top = y + "px";
+
   target.id = "target-" + randomId();
 
   target.innerHTML = innerTargetHTML(currentPoints, losePoints);
 
-  changeTargetSize(target);
+  changeTargetWidth(target);
 
   target.value = currentPoints;
 
@@ -116,7 +124,7 @@ function createTarget(x, y) {
 
   // Click and right click for targets
 
-  target.addEventListener("mousedown", (event) => {
+  target.addEventListener("click", (event) => {
     event.stopPropagation();
 
     targetLogic(target);
@@ -143,7 +151,7 @@ function innerTargetHTML(currentPoints, losePoints) {
 
 // Click and right click support for Missed targets
 
-gameEl.addEventListener("mousedown", (e) => missedTargetLogic(e));
+gameEl.addEventListener("click", (e) => missedTargetLogic(e));
 gameEl.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   missedTargetLogic(e);
@@ -190,18 +198,32 @@ function checkNumberOfTargets() {
   const numberOfTargets = gameEl.querySelectorAll(".target").length;
 
   if (numberOfTargets < numberOfTargetsLimit)
-    createTarget(randomCoordinate(), randomCoordinate());
+    createTarget(
+      randomCoordinate(gameEl.offsetWidth),
+      randomCoordinate(gameEl.offsetHeight)
+    );
 
   const targetsArray = gameEl.querySelectorAll(".target");
   for (let i = 0; i < targetsArray.length; i++) {
-    changeTargetSize(targetsArray[i]);
+    changeTargetWidth(targetsArray[i]);
+    moveTargetOnTheBoard(targetsArray[i]);
   }
 }
 
-function changeTargetSize(target) {
-  target.style.width = 4 * targetSize + "rem";
-  target.style.height = 4 * targetSize + "rem";
-  target.style.fontSize = 2 * targetSize + "rem";
+function changeTargetWidth(target) {
+  target.style.width = targetWidth + "px";
+  target.style.height = targetWidth + "px";
+
+  target.style.fontSize = targetWidth / 2 + "px";
+}
+
+function moveTargetOnTheBoard(target) {
+  if (target.offsetWidth + target.offsetLeft > gameEl.offsetWidth) {
+    target.style.left = gameEl.offsetWidth - target.offsetWidth + "px";
+  }
+  if (target.offsetHeight + target.offsetTop > gameEl.offsetHeight) {
+    target.style.top = gameEl.offsetHeight - target.offsetHeight + "px";
+  }
 }
 
 // Increment/Decrement feature
@@ -234,19 +256,19 @@ function changeRespawnTime() {
 
 // target size
 
-targetSizeEl.min = 0.5;
-targetSizeEl.max = 2;
-targetSizeEl.step = 0.01;
-targetSizeEl.value = targetSize;
+targetSizeEl.min = 10;
+targetSizeEl.max = 120;
+targetSizeEl.step = 1;
+targetSizeEl.value = targetWidth;
 
-targetSizeEl.addEventListener("input", setTargetSize);
+targetSizeEl.addEventListener("input", setTargetWidth);
 
 const currentSizeValueEl = document.getElementById("size--current-value");
-currentSizeValueEl.innerText = targetSize;
+currentSizeValueEl.innerText = targetWidth + " px";
 
-function setTargetSize() {
-  targetSize = targetSizeEl.value;
-  currentSizeValueEl.innerText = targetSize;
+function setTargetWidth() {
+  targetWidth = targetSizeEl.value;
+  currentSizeValueEl.innerText = targetWidth + " px";
 }
 
 // toggle menu
