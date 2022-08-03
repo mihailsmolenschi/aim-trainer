@@ -33,20 +33,23 @@ const randomCoordinate = () => Math.floor(Math.random() * 90);
 
 const randomId = () => Math.random().toString();
 
-const updateScore = (currentScore) => {
-  if (currentScore > 0) {
-    score += currentScore;
-
-    scoreEl.innerText = score;
-
-    updateScoreStatus("add", currentScore);
-  } else if (currentScore === 0) {
+const updateScore = (points) => {
+  if (points === 0) {
     score = 0;
 
     scoreEl.innerText = score;
 
     updateScoreStatus();
+    return;
   }
+
+  score += points;
+
+  console.log(score);
+
+  scoreEl.innerText = score;
+
+  updateScoreStatus("add", points);
 };
 
 function updateScoreStatus(className, score) {
@@ -70,8 +73,9 @@ function updateScoreStatus(className, score) {
 
 const targetLogic = (event, target) => {
   event.stopPropagation();
+
   updateScore(Number(target.innerText));
-  // scoreStatusEl.classList.add("add");
+
   gameEl.removeChild(target);
 };
 
@@ -107,6 +111,8 @@ function createTarget(x, y) {
     target.innerText = --internalScore;
   }, 1000);
 
+  // Click and right click for targets
+
   target.addEventListener("mousedown", (event) => targetLogic(event, target));
   // Right click support
   target.addEventListener("contextmenu", (event) => {
@@ -116,7 +122,8 @@ function createTarget(x, y) {
 }
 
 // Click and right click support for Missed targets
-gameEl.addEventListener("click", (e) => missedTargetLogic(e));
+
+gameEl.addEventListener("mousedown", (e) => missedTargetLogic(e));
 gameEl.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   missedTargetLogic(e);
@@ -145,6 +152,7 @@ function createMissedTarget(x, y) {
 
 function countMisses(points) {
   missEl.innerText = ++missCounter;
+
   if (score - points > 0) {
     updateScore(-points);
 
