@@ -27,7 +27,8 @@ targetsCurrentValueEl.max = 20;
 targetsCurrentValueEl.value = numberOfTargetsLimit;
 numberOfTargetsEl.innerText = numberOfTargetsLimit;
 
-const randN = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+const randomNumberBetweenMinMax = (min, max) =>
+  Math.floor(Math.random() * (max - min)) + min;
 
 const randomCoordinate = () => Math.floor(Math.random() * 90);
 
@@ -74,7 +75,7 @@ function updateScoreStatus(className, score) {
 const targetLogic = (event, target) => {
   event.stopPropagation();
 
-  updateScore(Number(target.innerText));
+  updateScore(target.value);
 
   gameEl.removeChild(target);
 };
@@ -82,19 +83,23 @@ const targetLogic = (event, target) => {
 function createTarget(x, y) {
   const target = document.createElement("div");
 
-  // generate a number between 1 and 10
-  let targetLifeSpan = randN(1000, 10000);
+  // generate a number between 1 and 9
+  let targetLifeSpan = randomNumberBetweenMinMax(1000, 9000);
 
-  let internalScore = Math.round(targetLifeSpan / 1000);
+  let currentPoints = Math.round(targetLifeSpan / 1000);
 
-  const targetPoints = internalScore;
+  const losePoints = currentPoints;
 
   target.className = "target";
   target.style.left = x + "%";
   target.style.top = y + "%";
   target.id = "target-" + randomId();
-  target.innerText = internalScore;
-  target.style.transform = `scale(${targetSize})`;
+
+  target.innerHTML = innerTargetHTML(currentPoints, losePoints);
+
+  changeTargetSize(target);
+
+  target.value = currentPoints;
 
   gameEl.appendChild(target);
 
@@ -102,13 +107,15 @@ function createTarget(x, y) {
     if (gameEl.contains(target)) {
       gameEl.removeChild(target);
 
-      // if not clicked in time you loose points
-      countMisses(targetPoints);
+      // if not clicked in time you lose points
+      countMisses(losePoints);
     }
   }, targetLifeSpan);
 
   setInterval(() => {
-    target.innerText = --internalScore;
+    target.value = --currentPoints;
+
+    target.innerHTML = innerTargetHTML(currentPoints, losePoints);
   }, 1000);
 
   // Click and right click for targets
@@ -119,6 +126,17 @@ function createTarget(x, y) {
     event.preventDefault();
     targetLogic(event, target);
   });
+}
+
+function innerTargetHTML(currentPoints, losePoints) {
+  return `
+    <span class="target--current-points">
+      +${currentPoints}
+    </span>
+    <span class="target--lose-points">
+      -${losePoints}
+    </span> 
+    `;
 }
 
 // Click and right click support for Missed targets
@@ -172,10 +190,16 @@ function checkNumberOfTargets() {
   if (numberOfTargets < numberOfTargetsLimit)
     createTarget(randomCoordinate(), randomCoordinate());
 
-  const targetsArr = gameEl.querySelectorAll(".target");
-  for (let i = 0; i < targetsArr.length; i++) {
-    targetsArr[i].style.transform = `scale(${targetSize})`;
+  const targetsArray = gameEl.querySelectorAll(".target");
+  for (let i = 0; i < targetsArray.length; i++) {
+    changeTargetSize(targetsArray[i]);
   }
+}
+
+function changeTargetSize(target) {
+  target.style.width = 4 * targetSize + "rem";
+  target.style.height = 4 * targetSize + "rem";
+  target.style.fontSize = 2 * targetSize + "rem";
 }
 
 // Increment/Decrement feature
@@ -208,17 +232,17 @@ function changeRespawnTime() {
 
 // target size
 
-targetSizeEl.min = 0;
-targetSizeEl.max = 4;
+targetSizeEl.min = 0.5;
+targetSizeEl.max = 3;
 targetSizeEl.step = 0.01;
 targetSizeEl.value = targetSize;
 
 targetSizeEl.addEventListener("change", setTargetSize);
 
-const temp = document.getElementById("size--current-value");
-temp.innerText = targetSize;
+const currentSizeValueEl = document.getElementById("size--current-value");
+currentSizeValueEl.innerText = targetSize;
 
 function setTargetSize() {
   targetSize = targetSizeEl.value;
-  temp.innerText = targetSize;
+  currentSizeValueEl.innerText = targetSize;
 }
