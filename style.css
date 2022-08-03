@@ -61,7 +61,8 @@ button {
 }
 
 .respawn--container,
-.size--container {
+.size--container,
+.targets-number--container {
   display: flex;
   flex-direction: column;
   justify-content: content;

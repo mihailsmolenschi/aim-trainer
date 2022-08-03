@@ -3,10 +3,8 @@
 const gameEl = document.getElementById("game");
 const scoreEl = document.getElementById("score");
 const missEl = document.getElementById("miss");
-
-const decrementTargetsEl = document.getElementById("targets-decrement");
-const incrementTargetsEl = document.getElementById("targets-increment");
-const numberOfTargets = document.getElementById("targets-number");
+const targetsCurrentValueEl = document.getElementById("targets--value");
+const numberOfTargetsEl = document.getElementById("targets--number");
 const respawnValueEl = document.getElementById("respawn--value");
 
 const respawnCurrentValueEl = document.getElementById("respawn--current-value");
@@ -18,13 +16,16 @@ const scoreStatusEl = document.getElementById("score--status");
 const targets = [];
 let score = 0;
 let missCounter = 0;
-let numberOfTargetsLimit = 8;
 let respawnTargetInterval;
 let targetRespawnTime = 1000; // milliseconds
 
 let targetSize = 1;
 
-numberOfTargets.innerText = numberOfTargetsLimit;
+let numberOfTargetsLimit = 8;
+targetsCurrentValueEl.min = 1;
+targetsCurrentValueEl.max = 20;
+targetsCurrentValueEl.value = numberOfTargetsLimit;
+numberOfTargetsEl.innerText = numberOfTargetsLimit;
 
 const randN = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
@@ -171,19 +172,11 @@ function checkNumberOfTargets() {
 
 // Increment/Decrement feature
 
-decrementTargetsEl.addEventListener("click", decrementTargets);
-incrementTargetsEl.addEventListener("click", incrementTargets);
+targetsCurrentValueEl.addEventListener("click", changeTargetsNumber);
 
-function decrementTargets() {
-  if (numberOfTargetsLimit === 1) return;
-
-  numberOfTargets.innerText = --numberOfTargetsLimit;
-}
-
-function incrementTargets() {
-  if (numberOfTargetsLimit >= 20) return;
-
-  numberOfTargets.innerText = ++numberOfTargetsLimit;
+function changeTargetsNumber() {
+  numberOfTargetsLimit = targetsCurrentValueEl.value;
+  numberOfTargetsEl.innerText = numberOfTargetsLimit;
 }
 
 // Respawn target feature
