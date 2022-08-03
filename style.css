@@ -75,6 +75,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+
   width: 100vw;
   height: 50vh;
   position: absolute;
@@ -102,7 +103,7 @@ body {
 .main {
   background-color: antiquewhite;
   width: 90vw;
-  height: 85vh;
+  height: 70vh;
 
   display: flex;
   flex-direction: column;
@@ -188,7 +189,7 @@ body {
 
   font-size: 2rem;
 
-  animation: grow 0.5s, pulse 4s infinite;
+  /* animation: grow 0.5s, pulse 4s infinite; */
 
   z-index: 2;
 
