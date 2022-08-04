@@ -256,7 +256,7 @@ function changeRespawnTime() {
 
 // target size
 
-targetSizeEl.min = 10;
+targetSizeEl.min = 20;
 targetSizeEl.max = 120;
 targetSizeEl.step = 1;
 targetSizeEl.value = targetWidth;
