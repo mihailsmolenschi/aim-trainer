@@ -27,7 +27,7 @@ body {
 }
 
 .navbar {
-  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 
   display: flex;
   justify-content: space-around;
@@ -36,7 +36,10 @@ body {
   padding: 1rem;
 
   position: relative;
-  background-color: antiquewhite;
+  background-color: lightskyblue;
+}
+header h1 {
+  font-size: 3rem;
 }
 
 .btn-toggle-menu {
@@ -44,14 +47,14 @@ body {
 
   z-index: 11;
 
-  width: 8rem;
   height: 4rem;
+  padding: 0 1rem;
   font-size: 2rem;
   border: 1px solid #818181fb;
   border-radius: 10px;
 
-  background-color: #fff;
-  color: #000;
+  background-color: lightcoral;
+  color: #fff;
 
   transition: all 0.3s;
 
@@ -63,21 +66,24 @@ body {
 }
 
 .main-menu {
-  background-color: rgba(250, 235, 215, 0.98);
+  background-color: rgba(135, 206, 250, 0.99);
   font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 1.4px;
 
   /* border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px; */
-  box-shadow: 1px 5px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
 
   width: 100vw;
-  height: 50vh;
+  height: 30vh;
   position: absolute;
   top: 0;
   left: 0;
@@ -90,6 +96,8 @@ body {
   transform: translateY(-100%);
   visibility: hidden;
   z-index: 10;
+
+  padding-bottom: 2rem;
 }
 
 .open-menu .main-menu {
@@ -101,7 +109,7 @@ body {
 }
 
 .main {
-  background-color: antiquewhite;
+  background-color: seashell;
   width: 90vw;
   height: 70vh;
 
@@ -155,11 +163,11 @@ body {
 }
 
 .add {
-  background-color: green;
+  background-color: lightskyblue;
 }
 
 .substract {
-  background-color: red;
+  background-color: lightcoral;
 }
 
 .game {
@@ -173,13 +181,7 @@ body {
 }
 
 .target {
-  background-color: red;
-
   position: absolute;
-
-  border-radius: 50%;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 
   top: 0;
   left: 0;
@@ -187,20 +189,26 @@ body {
   width: 4rem;
   height: 4rem;
 
-  font-size: 2rem;
-
-  /* animation: grow 0.5s, pulse 4s infinite; */
-
-  z-index: 2;
-
-  color: #fff;
-
-  transition: all 0.2s;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  border-radius: 50%;
+
+  background-color: crimson;
+  color: #fff;
+
+  font-size: 2rem;
+
+  box-shadow: 0 0 4px #000;
+
+  z-index: 2;
+
+  transition: all 0.2s;
+
+  /* animation: grow 0.2s, pulse 2s infinite; */
+  animation: pulse 2s infinite;
 }
 
 .target:hover,
@@ -225,14 +233,14 @@ body {
 }
 
 @keyframes grow {
-  0% {
-    transform: scale(10%);
+  from {
+    transform: scale(0);
   }
 }
 
 @keyframes pulse {
   50% {
-    transform: scale(80%);
+    transform: scale(1.1);
   }
 }
 

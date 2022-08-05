@@ -67,11 +67,11 @@ function updateScoreStatus(className, score) {
   if (className === "add") {
     scoreStatusEl.classList.remove("substract");
     scoreStatusEl.classList.add("add");
-    scoreStatusEl.innerText = "+ " + score;
+    scoreStatusEl.innerText = "+" + score;
   } else if (className === "substract") {
     scoreStatusEl.classList.remove("add");
     scoreStatusEl.classList.add("substract");
-    scoreStatusEl.innerText = "- " + score;
+    scoreStatusEl.innerText = "-" + score;
   }
 }
 
@@ -124,7 +124,7 @@ function createTarget(x, y) {
 
   // Click and right click for targets
 
-  target.addEventListener("click", (event) => {
+  target.addEventListener("mousedown", (event) => {
     event.stopPropagation();
 
     targetLogic(target);
@@ -151,7 +151,7 @@ function innerTargetHTML(currentPoints, losePoints) {
 
 // Click and right click support for Missed targets
 
-gameEl.addEventListener("click", (e) => missedTargetLogic(e));
+gameEl.addEventListener("mousedown", (e) => missedTargetLogic(e));
 gameEl.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   missedTargetLogic(e);
