@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
 
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+    <title>Document</title>
+  </head>
 
-  <title>Document</title>
-</head>
+  <body>
+    <div class="app">
+      <header class="navbar">
+        <h1>🎯🎯🎯</h1>
+        <button class="btn-toggle-menu">Menu</button>
+        <div class="main-menu">
+          <div class="targets-number--container">
+            <span>Targets</span>
+            <input id="targets--value" type="range" />
+            <span id="targets--number"></span>
+          </div>
 
-<body>
+          <div class="respawn--container">
+            <span>Respawn</span>
+            <input type="range" id="respawn--value" />
+            <span><span id="respawn--current-value"></span>ms</span>
+          </div>
 
+          <div class="size--container">
+            <span class="size-label">Size</span>
+            <input type="range" id="size--value" />
+            <span><span id="size--current-value"></span>px</span>
+          </div>
+        </div>
+      </header>
 
+      <div class="main">
+        <div class="score-timer">
+          <div class="score-container">
+            Score:
+            <span id="score" class="score--val">0</span>
+            <span id="score--status" class="score--status"></span>
+          </div>
 
+          <div class="timer-container">
+            <span><span id="timer" class="timer--val">10</span>s</span>
+          </div>
 
-  <div class="app">
-
-    <header class="navbar">
-      <h1>🎯🎯🎯</h1>
-      <button class="btn-toggle-menu">menu</button>
-      <div class="main-menu">
-        <div class="targets-number--container">
-          <span>targets</span>
-          <input id="targets--value" type="range">
-          <span id="targets--number"></span>
+          <div class="miss-container">
+            Missed:
+            <span id="miss" class="miss--val">0</span>
+          </div>
         </div>
 
-        <div class="respawn--container">
-          <span>respawn</span>
-          <input type="range" id="respawn--value">
-          <span><span id="respawn--current-value"></span> ms</span>
+        <div id="board" class="board">
+          <!-- <div class="target"></div> -->
         </div>
-
-        <div class="size--container">
-          <span class="size-label">size</span>
-          <input type="range" id="size--value">
-          <span id="size--current-value"></span>
-        </div>
-      </div>
-    </header>
-
-    <div class="main">
-      <div class="score-timer">
-
-        <div class="score-container">
-          Score:
-          <span id="score" class="score--val">0</span>
-          <span id="score--status" class="score--status"></span>
-        </div>
-        <div class="miss-container">
-          Missed:
-          <span id="miss" class="scoer--val">0</span>
-        </div>
-      </div>
-
-      <div id="game" class="game">
-        <!-- <div class="target"></div> -->
-
       </div>
     </div>
-  </div>
-
-</body>
-
+  </body>
 </html>
